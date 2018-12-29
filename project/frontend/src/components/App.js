@@ -1,10 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import DataProvider from "./DataProvider";
-import Table from "./Table";
+import {BrowserRouter,Route} from 'react-router-dom';
+import Suggestions from './Suggestions';
+import Favorites from './Favorites';
+import Header from './Header';
+import ItemDetails from './ItemDetails';
+
 const App = () => (
-  <DataProvider endpoint="api/lead/" 
-                render={data => <Table data={data} />} />
+  <BrowserRouter>
+    <div>
+      <Header/>
+      <Route path="/" exact component={Suggestions} />
+      <Route path="/favorites/" exact component={Favorites} />
+      <Route path="/items/:id" component={ItemDetails} />
+    </div>
+  </BrowserRouter>
+
+
 );
-const wrapper = document.getElementById("app");
-wrapper ? ReactDOM.render(<App />, wrapper) : null;
+
+// const wrapper = document.getElementById("app");
+// wrapper ? ReactDOM.render(<App />, wrapper) : null;
+
+export default App;

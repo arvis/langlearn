@@ -1,0 +1,8 @@
+export const ADD_SUGGESTION = "ADD_SUGGESTION";
+export const GET_SUGGESTIONS = "GET_SUGGESTIONS";
+export const GET_FAVORITES = "GET_FAVORITES";
+export const GET_LISTS = "GET_LISTS";
+export const ADD_FAVORITE = "ADD_FAVORITE";
+export const TOGGLE_MODAL = "TOGGLE_MODAL";
+export const SELECT_SUGGESTION = "SELECT_SUGGESTION";
+

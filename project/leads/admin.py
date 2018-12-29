@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Lead,Suggestion,List,Favorite
+
+admin.site.register(Lead)
+admin.site.register(Suggestion)
+admin.site.register(List)
+admin.site.register(Favorite)
