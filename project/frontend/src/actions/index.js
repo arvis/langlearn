@@ -16,7 +16,6 @@ export const addFavorite=(favorite)=>{
 // };
 
 export const getSuggestions = () => {
-
   return (dispatch) => {
     fetch("http://localhost:8000/api/sugg/")
     .then(response => response.json())
@@ -28,16 +27,24 @@ export const getSuggestions = () => {
         dispatch({ type: GET_SUGGESTIONS, payload: data });
     });
   };
-
-
 };
 
-export const getLists = () => {
-  // return async dispatch => {
-  //   const response = await server.get('/lists');
-  //   dispatch({ type: 'GET_LISTS', payload: response.data.data });
-  // };
+export const getSuggestion = (suggestionId) => {
+  return (dispatch) => {
+    fetch(`http://localhost:8000/api/sugg/${suggestionId}/`)
+    .then(response => response.json())
+    .then(data => {
+      // if (response.status !== 200) {
+      //   return this.setState({ placeholder: "Something went wrong" });
+      // }
+      // return response.json();
+        dispatch({ type: 'GET_SUGGESTION', payload: data });
+    });
+  };
+};
 
+
+export const getLists = () => {
   return (dispatch) => {
     fetch("http://localhost:8000/api/lst/")
     .then(response => response.json())
@@ -51,6 +58,46 @@ export const getLists = () => {
   };
 };
 
+export const saveFavorite=(suggestionId, listId=1)=>{
+  // return {
+  //   type:'SAVE_FAVORITE',
+  //   payload: favorite
+  // }
+
+  // fetch('http://localhost:8000/api/favorite/', {
+  //   method: 'post',
+  //   headers: {
+  //     'Accept': 'application/json, text/plain, */*',
+  //     'Content-Type': 'application/json'
+  //   },
+  //   body: JSON.stringify({suggestion: suggestionId})
+  // }).then(res=>res.json())
+  //   .then(res => console.log(res));
+
+  return (dispatch) => {
+    fetch('http://localhost:8000/api/favorite/', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({suggestion: suggestionId})
+    })
+    .then(response => response.json())
+    .then(data => {
+      // if (response.status !== 200) {
+      //   return this.setState({ placeholder: "Something went wrong" });
+      // }
+      // return response.json();
+        dispatch({ type: 'SAVE_FAVORITE', payload: data });
+    });
+  };
+
+
+};
+
+
+
 export const getFavorites = () => {
   // return async dispatch => {
   //   const response = await server.get('/favorites');
@@ -59,15 +106,8 @@ export const getFavorites = () => {
   
 };
 
-
-export const saveFavorite=(favorite, listItem)=>{
-  console.log("saveFavorite-");
-  return {
-    type:'SAVE_FAVORITE',
-    payload: favorite
-  }
-};
-
+//---------------------
+// old functions that maybe need to be removed
 
 export const toggleModal=(arg)=>{
   console.log("toggleModal");

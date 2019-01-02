@@ -1,5 +1,7 @@
 export const ADD_SUGGESTION = "ADD_SUGGESTION";
 export const GET_SUGGESTIONS = "GET_SUGGESTIONS";
+export const GET_SUGGESTION = "GET_SUGGESTION";
+
 export const GET_FAVORITES = "GET_FAVORITES";
 export const GET_LISTS = "GET_LISTS";
 export const ADD_FAVORITE = "ADD_FAVORITE";

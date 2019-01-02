@@ -3,6 +3,7 @@ from leads.serializers import LeadSerializer,SuggestionSerializer,ListSerializer
 from rest_framework import generics
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
+from rest_framework.parsers import JSONParser
 
 class LeadListCreate(generics.ListCreateAPIView):
   queryset = Lead.objects.all()
@@ -43,7 +44,9 @@ def my_favorites(request):
 @csrf_exempt
 def add_favorite(request):
   if not request.user.is_authenticated:
-    return JsonResponse(status=403)
+    auth=dict()
+    auth['message']='No authentification'
+    return JsonResponse(auth, status=403)
 
   if request.method == 'POST':
     data = JSONParser().parse(request)
@@ -55,9 +58,36 @@ def add_favorite(request):
     # check if such entry exists
     # if not, save it
 
-    data.user_id = request.user.id
-    serializer = AddFavoriteSerializer(data=data)
+    data['author'] = request.user.id
+    data['list'] = '1'
+    #TODO: now always first list, later need to think which id to take
+    # data['list_id'] = '1' #List.objects.get(pk=1).id
+    serializer = FavoriteSerializer(data=data)
     if serializer.is_valid():
       serializer.save()
       return JsonResponse(serializer.data, status=201)
     return JsonResponse(serializer.errors, status=400)
+
+@csrf_exempt
+def is_auth(request):
+  auth_data = dict()
+  if request.user.is_authenticated:
+    auth_data['auth'] = True
+    user_data = dict()
+    user_data['username']=request.user.username
+    auth_data['user'] = user_data
+  else:
+    auth_data['auth'] = False
+  return JsonResponse(auth_data, status=200)
+
+@csrf_exempt
+def add_suggestion(request):
+  if not request.user.is_authenticated:
+    return JsonResponse(status=401)
+
+  if request.method == 'POST':
+    data = JSONParser().parse(request)
+
+    import pdb;pdb.set_trace()
+
+    return JsonResponse(dict(), status=201)

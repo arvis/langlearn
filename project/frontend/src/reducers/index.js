@@ -2,6 +2,7 @@ import {combineReducers} from 'redux';
 
 import {
   GET_SUGGESTIONS,
+  GET_SUGGESTION,
   GET_FAVORITES,
   ADD_SUGGESTION,
   ADD_FAVORITE,
@@ -74,6 +75,24 @@ const getSuggestions = (state=[],action) => {
   }
 };
 
+const getSuggestion = (state=null,action) => {
+  switch (action.type) {
+    case GET_SUGGESTION:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+const saveFavoriteReducer = (state = [], action) => {
+  if (action.type === 'SAVE_FAVORITE') {
+    return [...state,action.payload];
+  } else {
+    return state;
+  }
+};
+
+
 const getFavorites = (state=[],action) => {
   switch (action.type) {
     case GET_FAVORITES:
@@ -91,6 +110,8 @@ const getLists = (state=[],action) => {
       return state;
   }
 };
+
+
 
 const getSelectedSuggestion = () => {
   return currentState.selectedSuggestion;
@@ -154,13 +175,6 @@ const addFavoriteReducer = (state = {}, action) => {
   }
 };
 
-const saveFavoriteReducer = (state = [], action) => {
-  if (action.type === 'SAVE_FAVORITE') {
-    return [...state,action.payload];
-  } else {
-    return state;
-  }
-};
 
 const postsReducer =(state=[], action)=>{
 
@@ -177,6 +191,7 @@ export default combineReducers({
   toggleModal:toggleModalReducer,
   modal:getModalStatus,
   suggestions: getSuggestions,
+  suggestion: getSuggestion,
   songs:songsReducer,
   addFavorite:addFavoriteReducer,
   lists: getLists,

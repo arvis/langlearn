@@ -33,7 +33,7 @@ class MyFavoriteSerializer(serializers.ModelSerializer):
 
 class AddFavoriteSerializer(serializers.Serializer):
   suggestion_id = serializers.IntegerField()
-  user_id = serializers.IntegerField(required=False)
+  author_id = serializers.IntegerField(required=False)
 
   def create(self, validated_data):
     return Favorite.objects.create(**validated_data)

@@ -1,7 +1,8 @@
 import React from "react";
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import { getSuggestions } from '../actions'
+import { getSuggestions,saveFavorite } from '../actions'
 
 
 class Suggestions extends React.Component {
@@ -15,7 +16,7 @@ class Suggestions extends React.Component {
       <div className="box content">
       {this.props.suggestions.map((item, i) =>
         <article className="post" key={i}>
-          <h4>{item.title}</h4>
+          <h4><Link to={"/items/"+item.id} >{item.title}</Link></h4>
           <div className="media">
             <div className="media-left">
               <p className="image is-128x128">
@@ -26,8 +27,9 @@ class Suggestions extends React.Component {
               <div className="content">
                 <p>
                 {item.link}<br/>
-                  {item.description}
+                <Link to={"/items/"+item.id} >{item.description}</Link>
                 </p>
+                <button onClick={(e) =>{e.preventDefault(); this.props.saveFavorite(item.id)} }> Click me </button>
               </div>
             </div>
 
@@ -54,4 +56,4 @@ const mapStateToProps = (state) => {
 
 
 //export default connect(mapStateToProps,{getSuggestions,toggleModal})(MainArea);
-export default connect(mapStateToProps, { getSuggestions })(Suggestions);
+export default connect(mapStateToProps, { getSuggestions,saveFavorite })(Suggestions);
