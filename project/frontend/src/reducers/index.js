@@ -11,24 +11,6 @@ import {
 } from '../constants/actionTypes';
 
 const initialSuggestions = [
-  {
-    id: 1,
-    title: "NodeJS web development",
-    img_link: "book1.jpg",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed nulla."
-  },
-  {
-    id: 2,
-    title: "Node.js Tutorial for Beginners",
-    img_link: "http://img.youtube.com/vi/C7TFgfY7JdE/mqdefault.jpg",
-    description: "Node.js Tutorial for Beginners: Learn Node in 1 Hour | Mosh"
-  },
-  {
-    id: 3,
-    title: "Effective Java",
-    img_link: "book1.jpg",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed nulla."
-  },
 ];
 
 const initialLists = [
@@ -63,8 +45,6 @@ const currentState = {
   currentPage: "suggestions",
   selectedSuggestion: {}
 };
-
-let modalVar = false;
 
 const getSuggestions = (state=[],action) => {
   switch (action.type) {
@@ -105,6 +85,15 @@ const getFavorites = (state=[],action) => {
 const getLists = (state=[],action) => {
   switch (action.type) {
     case 'GET_LISTS':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+const addSuggestion = (state=null,action) => {
+  switch (action.type) {
+    case ADD_SUGGESTION:
       return action.payload;
     default:
       return state;
@@ -194,7 +183,9 @@ export default combineReducers({
   suggestion: getSuggestion,
   songs:songsReducer,
   addFavorite:addFavoriteReducer,
+  addSuggestion:addSuggestion,
   lists: getLists,
+  favorites:getFavorites,
   posts: postsReducer,
   saveFavorite:saveFavoriteReducer,
   selectedSong: selectedSongReducer

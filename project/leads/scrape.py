@@ -3,11 +3,35 @@ from requests.exceptions import RequestException
 from contextlib import closing
 from bs4 import BeautifulSoup
 
-def scrape_webpage(page):
-  pass
+def get_data(url):
+  raw_html = simple_get(url)
+  html = BeautifulSoup(raw_html, 'html.parser')
+  output_data = get_data_generic(html)
+  if url.find("https://www.youtube.com")>-1:
+    output_data['type'] = 'youtube'
+    # TODO: strip youtube ID, so I can embed item and get picture
+  else:
+    output_data['type'] = 'generic'
+  return output_data
 
-def scrape_youtube(page):
-  pass
+def get_data_generic(html):
+  output_data=dict()
+  for title in html.select('title'):
+    output_data['title']= title.text
+
+  desc= html.findAll(attrs={"name":"description"})
+  for d in desc:
+    if d.attrs['name'] == 'description':
+      output_data['description']= d.attrs['content']
+
+  desc= html.findAll(attrs={"name":"keywords"})
+  for d in desc:
+    if d.attrs['name'] == 'keywords':
+      output_data['keywords']= d.attrs['content']
+
+  #import pdb;pdb.set_trace()
+
+  return output_data
 
 def simple_get(url):
   """
@@ -45,24 +69,3 @@ def log_error(e):
   """
   print(e)
 
-
-def get_data(url):
-  raw_html = simple_get(url)
-  html = BeautifulSoup(raw_html, 'html.parser')
-  output_data=dict()
-  for title in html.select('title'):
-    output_data['title']= title.text
-
-  desc= html.findAll(attrs={"name":"description"})
-  for d in desc:
-    if d.attrs['name'] == 'description':
-      output_data['description']= d.attrs['content']
-
-  desc= html.findAll(attrs={"name":"keywords"})
-  for d in desc:
-    if d.attrs['name'] == 'keywords':
-      output_data['keywords']= d.attrs['content']
-
-  #import pdb;pdb.set_trace()
-
-  return output_data

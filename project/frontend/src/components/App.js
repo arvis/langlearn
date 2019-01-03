@@ -5,6 +5,7 @@ import Suggestions from './Suggestions';
 import Favorites from './Favorites';
 import Header from './Header';
 import ItemDetails from './ItemDetails';
+import AddSuggestion from './AddSuggestion';
 
 const App = () => (
   <HashRouter>
@@ -16,6 +17,7 @@ const App = () => (
       <Route path="/items/:pageId" render={(props) => (
         <ItemDetails key={props.match.params.pageId} {...props} />)
           } />
+      <Route path="/suggest/" exact component={AddSuggestion} />
 
     </div>
   </HashRouter >

@@ -29,7 +29,7 @@ class Suggestions extends React.Component {
                 {item.link}<br/>
                 <Link to={"/items/"+item.id} >{item.description}</Link>
                 </p>
-                <button onClick={(e) =>{e.preventDefault(); this.props.saveFavorite(item.id)} }> Click me </button>
+                <button className="button is-primary" onClick={(e) =>{e.preventDefault(); this.props.saveFavorite(item.id)} }> Click me </button>
               </div>
             </div>
 
@@ -54,6 +54,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-
-//export default connect(mapStateToProps,{getSuggestions,toggleModal})(MainArea);
 export default connect(mapStateToProps, { getSuggestions,saveFavorite })(Suggestions);

@@ -10,11 +10,13 @@ class Lead(models.Model):
   created_at=models.DateTimeField(auto_now_add=True)
 
 class Suggestion(models.Model):
-  title=models.CharField(max_length=50)
-  image=models.URLField()
-  link=models.URLField()
-  description=models.CharField(max_length=300)
-  created_at=models.DateTimeField(auto_now_add=True)
+  title = models.CharField(max_length=300)
+  image = models.URLField()
+  link = models.URLField(blank=True)
+  description = models.TextField()
+  keywords = models.TextField(blank=True)
+  author = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,)
+  created_at = models.DateTimeField(auto_now_add=True)
   def __str__(self):
     return self.title
 
@@ -25,9 +27,10 @@ class List(models.Model):
   def __str__(self):
     return self.title
 
-
 class Favorite(models.Model):
   suggestion = models.ForeignKey(Suggestion, on_delete=models.CASCADE)
   list = models.ForeignKey(List, on_delete=models.CASCADE)
   author = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,)
   created_at=models.DateTimeField(auto_now_add=True)
+  def __str__(self):
+    return self.suggestion.title 

@@ -14,15 +14,6 @@ class ItemDetails extends React.Component {
     this.itemId=params.id;
   }
 
-  // componentWillReceiveProps(newProps){
-  //   console.log("componentWillReceiveProps "+this.itemId);
-
-  //   if (newProps.match.params.id !== this.props.match.params.id) {
-  //     this.itemId = newProps.match.params.id;
-  //     console.log("---"+this.itemId);
-  //   }
-  // }
-
   render() {
     if (!this.props.suggestion || !this.props.suggestion.link){
       return <div>Something wrong with request, please report to support</div>;

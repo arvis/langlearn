@@ -92,19 +92,44 @@ export const saveFavorite=(suggestionId, listId=1)=>{
         dispatch({ type: 'SAVE_FAVORITE', payload: data });
     });
   };
-
-
 };
-
-
 
 export const getFavorites = () => {
-  // return async dispatch => {
-  //   const response = await server.get('/favorites');
-  //   dispatch({ type: GET_FAVORITES, payload: response.data.data });
-  // };
-  
+  return (dispatch) => {
+    fetch("http://localhost:8000/api/my/")
+    .then(response => response.json())
+    .then(data => {
+      // if (response.status !== 200) {
+      //   return this.setState({ placeholder: "Something went wrong" });
+      // }
+      // return response.json();
+        dispatch({ type: GET_FAVORITES, payload: data });
+    });
+  };
 };
+
+export const addSuggestion=(url)=>{
+  return (dispatch) => {
+    fetch('http://localhost:8000/api/suggestion/', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({link: url})
+    })
+    .then(response => response.json())
+    .then(data => {
+      // if (response.status !== 200) {
+      //   return this.setState({ placeholder: "Something went wrong" });
+      // }
+      // return response.json();
+        dispatch({ type: ADD_SUGGESTION, payload: data });
+    });
+  };
+};
+
+
 
 //---------------------
 // old functions that maybe need to be removed

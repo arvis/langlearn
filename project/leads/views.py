@@ -4,6 +4,8 @@ from rest_framework import generics
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
 from rest_framework.parsers import JSONParser
+from leads.scrape import get_data
+
 
 class LeadListCreate(generics.ListCreateAPIView):
   queryset = Lead.objects.all()
@@ -50,14 +52,6 @@ def add_favorite(request):
 
   if request.method == 'POST':
     data = JSONParser().parse(request)
-
-    #create new item
-    # get from JSON item id and list id
-    # check if it exists
-    # add current user
-    # check if such entry exists
-    # if not, save it
-
     data['author'] = request.user.id
     data['list'] = '1'
     #TODO: now always first list, later need to think which id to take
@@ -87,7 +81,41 @@ def add_suggestion(request):
 
   if request.method == 'POST':
     data = JSONParser().parse(request)
+    data['author'] = request.user.id
 
-    import pdb;pdb.set_trace()
+    webpage_data = get_data(data['link'])
+    if webpage_data['title']:
+      data['title'] = webpage_data['title']
 
-    return JsonResponse(dict(), status=201)
+    if webpage_data['description']:
+      dots_mark = '..'
+      if len(webpage_data['description']) < 295:
+        dots_mark = ''
+      data['description'] = webpage_data['description'][:295] + dots_mark  
+    else:
+      data['description'] = webpage_data['title']
+
+    if webpage_data['keywords']:
+      data['keywords'] = webpage_data['keywords'][:295]
+    
+
+    #TODO: get image from webpage
+    if webpage_data['type']=='youtube':
+      #get image
+      data['image']=data['link']
+    else:
+      data['image']=data['link']
+
+
+    #TODO: add to model: keywords and author (just to see who is using it)
+    #get data from POST request
+    #get data from webpage, if it exists, if there is some data etc
+    # save the suggestion
+    # save the same suggestion to users favorites
+
+    # import pdb;pdb.set_trace()
+    serializer = SuggestionSerializer(data=data)
+    if serializer.is_valid():
+      serializer.save()
+      return JsonResponse(serializer.data, status=201)
+    return JsonResponse(serializer.errors, status=400)
